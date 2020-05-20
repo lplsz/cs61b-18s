@@ -1,4 +1,5 @@
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 public class TestPalindrome {
@@ -23,5 +24,16 @@ public class TestPalindrome {
         assertTrue(palindrome.isPalindrome("n"));
         assertFalse(palindrome.isPalindrome("Yoona"));
         assertFalse(palindrome.isPalindrome("Noon"));
+    }
+
+    @Test
+    public void testIsPalindromeOverload() {
+        CharacterComparator cc = new OffByOne();
+        assertTrue(palindrome.isPalindrome("abb", cc));
+        assertTrue(palindrome.isPalindrome("ybaz", cc));
+        assertTrue(palindrome.isPalindrome("ybcaz", cc));
+        assertFalse(palindrome.isPalindrome("Taeyeon", cc));
+        assertFalse(palindrome.isPalindrome("Taeyeon", cc));
+        assertFalse(palindrome.isPalindrome("Yoona", cc));
     }
 }
