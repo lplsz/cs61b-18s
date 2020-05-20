@@ -16,8 +16,12 @@ public class Palindrome {
     }
 
     private Boolean isPalindromeHelper(Deque L) {
-        if (L.isEmpty() || L.size() == 1) return true;
-        if (L.removeFirst() == L.removeLast()) return isPalindromeHelper(L);
+        if (L.isEmpty() || L.size() == 1) {
+            return true;
+        }
+        if (L.removeFirst() == L.removeLast()) {
+            return isPalindromeHelper(L);
+        }
         return false;
     }
 
@@ -27,8 +31,12 @@ public class Palindrome {
     }
 
     private Boolean isPalindromeOverloadHelper(Deque L, CharacterComparator cc) {
-        if (L.isEmpty() || L.size() == 1) return true;
-        if (cc.equalChars((char) L.removeFirst(), (char) L.removeLast())) return isPalindromeOverloadHelper(L, cc);
+        if (L.isEmpty() || L.size() == 1) {
+            return true;
+        }
+        if (cc.equalChars((char) L.removeFirst(), (char) L.removeLast())) {
+            return isPalindromeOverloadHelper(L, cc);
+        }
         return false;
     }
 }
