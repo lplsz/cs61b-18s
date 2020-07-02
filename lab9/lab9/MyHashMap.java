@@ -4,10 +4,10 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- *  A hash table-backed Map implementation. Provides amortized constant time
- *  access to elements via get(), remove(), and put() in the best case.
+ * A hash table-backed Map implementation. Provides amortized constant time
+ * access to elements via get(), remove(), and put() in the best case.
  *
- *  @author Your name here
+ * @author Your name here
  */
 public class MyHashMap<K, V> implements Map61B<K, V> {
 
@@ -35,9 +35,10 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         }
     }
 
-    /** Computes the hash function of the given key. Consists of
-     *  computing the hashcode, followed by modding by the number of buckets.
-     *  To handle negative numbers properly, uses floorMod instead of %.
+    /**
+     * Computes the hash function of the given key. Consists of
+     * computing the hashcode, followed by modding by the number of buckets.
+     * To handle negative numbers properly, uses floorMod instead of %.
      */
     private int hash(K key) {
         if (key == null) {
@@ -48,24 +49,60 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         return Math.floorMod(key.hashCode(), numBuckets);
     }
 
+    private int newHash(K key, int arrayLength) {
+        if (key == null) {
+            return 0;
+        }
+
+        return Math.floorMod(key.hashCode(), arrayLength);
+    }
+
     /* Returns the value to which the specified key is mapped, or null if this
      * map contains no mapping for the key.
      */
     @Override
     public V get(K key) {
-        throw new UnsupportedOperationException();
+        int hashCode = hash(key);
+        return buckets[hashCode].get(key);
     }
 
     /* Associates the specified value with the specified key in this map. */
     @Override
     public void put(K key, V value) {
-        throw new UnsupportedOperationException();
+        int hashCode = hash(key);
+        if (!buckets[hashCode].containsKey(key)) {
+            size++;
+        }
+        buckets[hashCode].put(key, value);
+        if (loadFactor() > MAX_LF) {
+            resize(size * 2);
+        }
     }
 
     /* Returns the number of key-value mappings in this map. */
     @Override
     public int size() {
-        throw new UnsupportedOperationException();
+        return size;
+    }
+
+    private void resize(int capacity) {
+        // Initialize new ArrayMap
+        ArrayMap<K, V>[] newBucket = new ArrayMap[capacity];
+        size = 0;
+        for (int i = 0; i < newBucket.length; i += 1) {
+            newBucket[i] = new ArrayMap<>();
+        }
+
+        // Copy contents
+        for (ArrayMap<K, V> i : buckets) {
+            for (K j : i.keySet()) {
+                int hashCode = newHash(j, capacity);
+                newBucket[hashCode].put(j, i.get(j));
+                size++;
+            }
+        }
+
+        buckets = newBucket;
     }
 
     //////////////// EVERYTHING BELOW THIS LINE IS OPTIONAL ////////////////
