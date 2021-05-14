@@ -48,16 +48,43 @@ public class MemoryGame {
 
     public String generateRandomString(int n) {
         //TODO: Generate random string of letters of length n
-        return null;
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < n; i++) {
+            sb.append(CHARACTERS[rand.nextInt(n)]);
+        }
+
+        return sb.toString();
     }
 
     public void drawFrame(String s) {
         //TODO: Take the string and display it in the center of the screen
         //TODO: If game is not over, display relevant game information at the top of the screen
+        StdDraw.clear();
+        StdDraw.enableDoubleBuffering();
+
+        StdDraw.setFont(new Font( "New", Font.BOLD, 30));    // Bold: 1
+        StdDraw.setPenColor(StdDraw.PRINCETON_ORANGE);
+
+        if (!gameOver) {
+            StdDraw.text(0.5, 1, "Game is not over");
+        }
+
+        StdDraw.text(0.5, 0.5, s);
+
+        StdDraw.show();
     }
 
     public void flashSequence(String letters) {
         //TODO: Display each character in letters, making sure to blank the screen between letters
+        for(int i = 0, n = letters.length() ; i < n ; i++) {
+            char c = letters.charAt(i);
+            drawFrame(Character.toString(c));
+            StdDraw.pause(1000);
+
+            StdDraw.clear();
+            StdDraw.pause(500);
+        }
     }
 
     public String solicitNCharsInput(int n) {
